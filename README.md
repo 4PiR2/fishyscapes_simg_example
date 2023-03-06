@@ -1,6 +1,7 @@
 # Fishyscapes SIMG Example
 
-This is an example of creating an [Apptainer / Singularity](https://apptainer.org/) image for [Fishyscapes](https://fishyscapes.com/) [submission](https://fishyscapes.com/submission).
+This is an example of creating an [Apptainer / Singularity](https://apptainer.org/) image for [Fishyscapes](https://fishyscapes.com/) [submission](https://fishyscapes.com/submission). We suggest building a Docker image first and then converting the Docker image to an Apptainer image.
+
 This example is based on the [synboost](https://github.com/giandbt/synboost) method. You do not need to look into `demo.py` and `requirements.txt` as they are specific to synboost.
 
 ## Install Docker and Apptainer
@@ -17,15 +18,15 @@ Make sure to follow the input and output requirements of the Fishyscapes benchma
 
 The Docker image will be converted to an Apptainer image. Please note the following differences:
 
-(1) Apptainer image is read-only. Do not create temporary or cache files outside the mounted output folder during runtime. If you have to use these files (e.g., torchvision's pretrained weight), please create them during the building process. 
+* Apptainer containers are read-only. Do not create temporary or cache files outside the mounted output folder during runtime. If you have to use these files (e.g., torchvision's pretrained weight), please create them during the building process. 
 
-(2) We will run Apptainer under a non-privileged user. Docker runs under the root user by default, which may cause permission issues in Apptainer. Please make sure non-privileged users have read access to all your files.
+* We will run Apptainer under a non-privileged user in the container. Docker runs under the root user by default in the container, which may cause permission issues in Apptainer. Please make sure non-privileged users have read access to all your files.
 
-(3) There will be no Internet connection in our evaluation environment.
+* There will be no Internet connection in our evaluation environment.
 
 (Optional) You may test your Docker image by executing `docker run --rm --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v /absolute/path/to/input/folder:/input -v /absolute/path/to/output/folder:/output happygod/synboost:4.0`.
 
-## Build the Apptainer image using Apptainer Definition file
+## Build your Apptainer image using Apptainer Definition file
 
 E.g., `singularity build synboost_4.0.simg singularity_synboost.def`.
 
