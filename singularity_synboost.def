@@ -1,0 +1,7 @@
+Bootstrap: docker
+From: happygod/synboost:4.0
+
+%runscript
+    cd /workspace/synboost
+    python3 main.py --demo_folder /input --save_folder /output
+
